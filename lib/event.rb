@@ -10,8 +10,8 @@ class Event
   end
 
   def ==(obj)
-    @dtstart.to_time == obj.dtstart.to_time &&
-    @dtend.to_time == obj.dtend.to_time &&
+    @dtstart.strftime("%Y-%m-%d %H:%M:%S") == obj.dtstart.strftime("%Y-%m-%d %H:%M:%S") &&
+    @dtend.strftime("%Y-%m-%d %H:%M:%S") == obj.dtend.strftime("%Y-%m-%d %H:%M:%S") &&
     @summary == obj.summary
   end
 

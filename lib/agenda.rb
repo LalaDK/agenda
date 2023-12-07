@@ -18,7 +18,6 @@ class Agenda
       @events << event
     else
       @events[existing].attendees = @events[existing].attendees + event.attendees
-    
     end
 
     sort!
