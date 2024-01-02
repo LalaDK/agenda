@@ -1,0 +1,58 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'fileutils'
+require_relative '../lib/agenda'
+
+config_dir = "#{Dir.home}/.config/agenda/"
+FileUtils.mkdir_p(config_dir)
+
+if !File.exists?("#{config_dir}/config.yaml")
+  puts "Creating example config"
+  FileUtils.cp("#{Agenda.root}/example/config.yaml", config_dir)
+end
+
+doc = %{
+Usage:
+  agenda [options]
+
+Options:
+  -e, --edit    Edit config file using default editor
+  -u, --update  Force update of the calendars
+  -h, --help
+
+If no options are provided, agenda will ....
+}
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = doc
+
+  opts.on("-u", "--update", "Force update") do
+    options[:update] = true
+  end
+  opts.on("-e", "--edit", "Edit config") do
+    options[:edit] = true
+  end
+  opts.on("-h", "--help", "Show help") do
+    options[:help] = true
+  end
+end.parse!
+
+if options[:help]
+  puts doc
+  exit 0
+end
+
+if options[:edit]
+  system("#{ ENV['EDITOR'] } #{config_dir}config.yaml")
+  exit 0
+end
+
+if options[:update] || !File.exists?('/tmp/agenda')
+  agenda = Agenda::Parser.parse_calendars
+  File.write('/tmp/agenda', agenda.to_s)
+end
+
+puts File.read('/tmp/agenda')
+exit 0

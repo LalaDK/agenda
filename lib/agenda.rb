@@ -1,34 +1,10 @@
-require './event'
+module Agenda
+  require_relative 'agenda/event'
+  require_relative 'agenda/agenda'
+  require_relative 'agenda/http'
+  require_relative 'agenda/parser'
 
-class Agenda
-  attr_accessor :events
-
-  def initialize(events: [])
-    @events = events
-  end
-
-  def has_event?(event)
-    @events.find(event)
-  end
-
-  def add_event(event)
-    existing = @events.index(event)
-
-    if existing.nil?
-      @events << event
-    else
-      @events[existing].attendees = @events[existing].attendees + event.attendees
-    end
-
-    sort!
-  end
-
-  def sort!
-    @events = @events.sort_by { |event| event.dtstart.to_time }
-  end
-
-  def to_s
-    "Dato\tTidspunkt\tBegivenhed\tDeltager(e)\n" +
-    @events.map(&:to_s).join("\n")
+  def self.root
+    File.dirname __dir__
   end
 end

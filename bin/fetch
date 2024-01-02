@@ -1,5 +1,17 @@
 #!/usr/bin/env bash
 
+while getopts ":ht" opt; do
+  case ${opt} in
+    e ) echo "EDIT!"
+      ;;
+    \? ) echo "Usage: ics-fetch [-h] [-t]"
+      ;;
+  esac
+done
+
+exit 0
+
+
 CONFIG_DIRECTORY=${HOME}/.config/ics-fetch
 mkdir -p -v $CONFIG_DIRECTORY
 
